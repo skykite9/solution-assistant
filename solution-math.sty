@@ -28,48 +28,90 @@
 	\keys_set:nn { theoreminfo } {#1}
 }
 
-\RenewDocumentCommand \newtheorem { m m o }
+\RenewDocumentCommand \newtheorem { s m m o }
 {
-\IfNoValueTF {#3} 
+\IfBooleanTF{#1}
 {
-	\NewDocumentEnvironment{#1}{ o }{\noindent\textbf{#2} \IfNoValueTF {##1} 
-	{\textbf{.}
+	\IfNoValueTF {#4} 
+	{
+		\NewDocumentEnvironment{#2}{ o }{\noindent\textbf{#3} \IfNoValueTF {##1} 
+		{\textbf{.}
+		}
+		{{\bfseries
+		\theoreminfokeys{##1}
+		\tl_if_empty:NF \l_my_number_tl
+		{~{\l_my_number_tl}
+		}
+		\tl_if_empty:NF \l_my_name_tl
+		{~{\normalfont(\l_my_name_tl)}
+		}.}
+		}
+		}
+		{\vskip 10pt}
 	}
-	{{\bfseries
-	\theoreminfokeys{##1}
-	\tl_if_empty:NF \l_my_number_tl
-	{~{\l_my_number_tl}
+	{
+		\NewDocumentEnvironment{#2}{ o }{\begin{tcolorbox}[title={\bfseries #3
+		\IfNoValueTF{##1}
+		{
+		}
+		{
+		\theoreminfokeys{##1}
+		\tl_if_empty:NF \l_my_number_tl
+		{~{\l_my_number_tl}
+		}
+		\tl_if_empty:NF \l_my_name_tl
+		{~{\normalfont(\l_my_name_tl)}
+		}
+		}
+		}
+		,after~title={\hfill
+		\tl_if_empty:NF \l_my_point_tl
+		{{(\l_my_point_tl)}
+		}
+		},
+		#3]
+		}
+		{\end{tcolorbox}}
 	}
-	\tl_if_empty:NF \l_my_name_tl
-	{~{\normalfont(\l_my_name_tl)}
-	}.}
-	}
-	}
-	{\vskip 10pt}
 }
 {
-	\NewDocumentEnvironment{#1}{ o }{\begin{tcolorbox}[title={\bfseries #2
-	\IfNoValueTF{##1}
+	\IfNoValueTF {#4} 
 	{
+		\newcounter{#2}
+		\NewDocumentEnvironment{#2}{ o }{\refstepcounter{#2}\noindent\textbf{#3~\csname the#2\endcsname} \IfNoValueTF {##1} 
+		{\textbf{.}
+		}
+		{{ 
+		\theoreminfokeys{##1} 
+		\tl_if_empty:NF \l_my_name_tl
+		{~{\normalfont(\l_my_name_tl)}
+		}.}
+		}
+		}
+		{\vskip 10pt}
 	}
 	{
-	\theoreminfokeys{##1}
-	\tl_if_empty:NF \l_my_number_tl
-	{~{\l_my_number_tl}
+		\newcounter{#2}
+		\NewDocumentEnvironment{#2}{ o }{\refstepcounter{#2}\begin{tcolorbox}[title={\bfseries #3~\csname the#2\endcsname
+		\IfNoValueTF{##1}
+		{
+		}
+		{
+		\theoreminfokeys{##1} 
+		\tl_if_empty:NF \l_my_name_tl
+		{~{\normalfont(\l_my_name_tl)}
+		}
+		}
+		}
+		,after~title={\hfill
+		\tl_if_empty:NF \l_my_point_tl
+		{{(\l_my_point_tl)}
+		}
+		},
+		#4]
+		}
+		{\end{tcolorbox}}
 	}
-	\tl_if_empty:NF \l_my_name_tl
-	{~{\normalfont(\l_my_name_tl)}
-	}
-	}
-	}
-	,after~title={\hfill
-	\tl_if_empty:NF \l_my_point_tl
-	{{(\l_my_point_tl)}
-	}
-	},
-	#3]
-	}
-	{\end{tcolorbox}}
 }
 }
 

@@ -1,0 +1,126 @@
+
+\DeclareOption{korean}{
+\everydisplay\expandafter{\the\everydisplay\def\baselinestretch{1.2}\selectfont}
+}
+\DeclareOption{english}{
+}
+
+\ExecuteOptions{english}
+\ProcessOptions\relax
+
+
+\RequirePackage{expl3,xparse,mathtools,amssymb,mathrsfs, amsthm}
+
+\RequirePackage{tcolorbox}
+
+
+\ExplSyntaxOn
+
+\keys_define:nn { theoreminfo }
+{
+	name. tl_set:N = \l_my_name_tl,
+	number .tl_set:N = \l_my_number_tl,
+	point .tl_set:N = \l_my_point_tl,
+}
+
+\NewDocumentCommand \theoreminfokeys { m }
+{
+	\keys_set:nn { theoreminfo } {#1}
+}
+
+\RenewDocumentCommand \newtheorem { m m o }
+{
+\IfNoValueTF {#3} 
+{
+	\NewDocumentEnvironment{#1}{ o }{\noindent\textbf{#2} \IfNoValueTF {##1} 
+	{\textbf{.}
+	}
+	{{\bfseries
+	\theoreminfokeys{##1}
+	\tl_if_empty:NF \l_my_number_tl
+	{~{\l_my_number_tl}
+	}
+	\tl_if_empty:NF \l_my_name_tl
+	{~{\normalfont(\l_my_name_tl)}
+	}.}
+	}
+	}
+	{\vskip 10pt}
+}
+{
+	\NewDocumentEnvironment{#1}{ o }{\begin{tcolorbox}[title={\bfseries #2
+	\IfNoValueTF{##1}
+	{
+	}
+	{
+	\theoreminfokeys{##1}
+	\tl_if_empty:NF \l_my_number_tl
+	{~{\l_my_number_tl}
+	}
+	\tl_if_empty:NF \l_my_name_tl
+	{~{\normalfont(\l_my_name_tl)}
+	}
+	}
+	}
+	,after~title={\hfill
+	\tl_if_empty:NF \l_my_point_tl
+	{{(\l_my_point_tl)}
+	}
+	},
+	#3]
+	}
+	{\end{tcolorbox}}
+}
+}
+
+
+
+\ExplSyntaxOff
+
+\newenvironment{solution}[1][\empty]{
+\ifx#1\empty
+\begin{proof}[Solution]
+\else
+\begin{proof}[#1]
+\fi
+}{\end{proof}}
+
+\makeatletter
+\newcommand{\course}[1]{\def\@course{#1}}
+
+\makepagestyle{solution}
+\makeoddhead{solution}{}{}{}
+\makeevenhead{solution}{}{}{}
+\makeoddfoot{solution}{}{}{}
+\makeoddfoot{solution}{\@title\par\@course}{}{\thepage}
+
+\renewcommand{\maketitle}
+{
+\begin{center}
+{\LARGE\@title}\vskip 15pt
+
+{\large \@course}\medskip
+
+{\large\@author} 
+\end{center}
+\vskip 30pt
+}
+\makeatother
+
+\pagestyle{solution}
+
+
+\setlength{\footskip}{15mm}
+\setlength{\footnotesep}{4mm}
+
+
+\captionnamefont{\sffamily\bfseries\small}
+\captiontitlefont{\small}
+\captionstyle{}
+\captionwidth{\linewidth}
+\normalcaptionwidth
+\normalcaption
+\captiondelim{.\hspace{0.5em}}
+
+
+\endinput

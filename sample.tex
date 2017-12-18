@@ -11,7 +11,7 @@
 
 \newtheorem{exercise}{Exercise}[.exercise_box]
 \newtheorem{problem}{Problem}[.exercise_box]
-\newtheorem{criteria}{Criteria}
+\newtheorem*{criteria}{Criteria}
 
 \title{Scoring criteria for Homework 4}
 \author{Hyunwoo Kwon}
@@ -46,18 +46,20 @@
  * interior point가 없는 집합도 있음.  
  \end{criteria}
   
+  
  
  \begin{problem}[number=6.13,name=Cantor's Nested Theorem,point=10pt]
  A sequence $\{E_k \}$ of sets in $\mathbb{R}^n$ is said to be {\it nested} if $E_{k+1} \subset E_k$ for all $k\in \mathbb{N}$. Prove that if $\{K_m\}$ is a nested sequence  of nonempty compact subsets of $\mathbb{R}^n$, then  $\bigcap_{m=1}^\infty K_m$ is nonempty and compact.
  Prove also that  if ${\rm diam}\, (K_m ) \to 0$ as $m \to \infty$ in addition, then  $\bigcap_{m=1}^\infty K_m$ consists of only one point.
  \end{problem}
- \begin{criteria}
+ \begin{criteria}\label{test}
  Bolzano-Weierstrass theorem을 이용해서 증명하거나, 결론을 부정해서 compactness의 정의를 이용해서 증명한 경우 7점
  
  ${\rm diam}\, (K_m ) \to 0$ as $m \to \infty$ 가정하에 원하는 것을 증명했을 경우 3점
  
  Cauchy sequence를 잡는 작업을 한 사람도 있는데, 두 번 증명하는 것이라 불 필요. 
   \end{criteria}
+   
  
 
 
